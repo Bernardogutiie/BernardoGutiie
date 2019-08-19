@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            background-image: url(fundo.jpg);
+            background-attachment: fixed;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-color: #000;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+    <script src="script.js"></script>
+    <meta charset="utf-8">
+
+    <title>Proj-Kukac</title>
+    <base href="/">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container" style="margin-top: 150px;">
+        <div class="row">
+            <div class="col-md-5">
+                <h1 class="display-5">Renda Per Capita</h1>
+
+                <form autocomplete="off" (submit)="onSubmit(form)">
+                    
+                    <div class="form-group">
+                        <input id="renda" class="form-control" placeholder="Renda Mensal:" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="dependentes" class="form-control" placeholder="Número de Dependentes:" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="cep" class="form-control" placeholder="Cep:" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary"  style="width: 445px;"onclick="calcular()">Calcular
+                            <p id="demo"></p>
+                        </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-left: 750px; margin-top: -295px;">
+        <div class="row">
+            <div class="col-md-4">
+                <h1 class="display-5">Dados Finais</h1>
+
+                <form autocomplete="off" (submit)="onSubmit(form)">
+                    <div class="form-group">
+
+                        <input id="rua" class="form-control" placeholder="Rua" required disabled>
+                    </div>
+                    <div class="form-group">
+                        <input id="bairro" class="form-control" placeholder="Bairro" required disabled>
+                    </div>
+                    <div class="form-group">
+                        <input id="cidade" class="form-control" placeholder="Cidade" required disabled>
+                    </div>
+                    <div class="form-group">
+                        <input id="uf" class="form-control" placeholder="Estado" required disabled>
+                    </div>
+                    <div class="form-group">
+                        <input id="percapita" class="form-control" placeholder="Renda Per Capita" required disabled>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //SELECIONANDO O DOCUMENTO INTEIRO, AGUARDA O CARREGAMENTO COMPLETO DA PAGINA
+
+ function calcular() {
+                    var a = document.getElementById("renda").value;
+                    var b = document.getElementById("dependentes").value;
+                    var c = a/b;
+                    $("#percapita").val(c);
+                     
+                    }        
+
+                    $(document).ready(function() {
+
+            $('#cep').mask("99.999-999");
+
+                    
+            $('#cep').change(function() {
+
+                var cep = $(this).val().replace(/\D/g, '');
+
+                $.getJSON("https://viacep.com.br/ws/" + cep + "/json", function(dados) {
+
+                    if (!("erro" in dados)) {
+
+                        $("#rua").val(dados.logradouro);
+                        $("#cidade").val(dados.localidade);
+                        $("#bairro").val(dados.bairro);
+                        $("#uf").val(dados.uf);
+
+                    }
+                   
+                      
+                });
+            });
+
+        });
+    </script>
+
+    </form>
